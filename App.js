@@ -1,11 +1,10 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import MainCoffeeCompenent from './src'
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Coffee app coming soon!</Text>
-      <StatusBar style="auto" />
+      <MainCoffeeCompenent/>
     </View>
   );
 }
@@ -13,8 +12,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
