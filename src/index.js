@@ -9,6 +9,8 @@ const MainCoffeeCompenent = () => {
     const [ phoneNumber, setPhoneNumber ] = useState ('');
     const [ code, setCode ] = useState ('');
     const [ verificationId, setVerificationId ] = useState (null);
+    const [ showVerification, setShowVerification ] = useState (true);
+    const [ showConfirm, setShowConfirm ] = useState (false);
     const recaptchaVerifier = useRef(null);
 
     const sendVerifaciton = () => {
@@ -16,6 +18,8 @@ const MainCoffeeCompenent = () => {
         phoneProvider.verifyPhoneNumber(phoneNumber,recaptchaVerifier.current)
             .then(setVerificationId);
             setPhoneNumber(''); 
+        setShowVerification(false);
+        setShowConfirm(true);
     };
 
     const confirmCode = () => {
@@ -32,6 +36,47 @@ const MainCoffeeCompenent = () => {
 
     }
 
+    function renderVerification (){
+        return (
+            <>
+                <Text style={styles.mainText}>
+                    Login with Phone Number
+                </Text>
+                <TextInput
+                    placeholder='Phone Number With Country Code'
+                    onChangeText={setPhoneNumber}
+                    keyboardType={'phone-pad'}
+                    autoComplete='tel'
+                    style={styles.textInput}
+                />
+                <TouchableOpacity style={styles.sendVerification} onPress={sendVerifaciton}>
+                    <Text style={styles.buttonText}>
+                        Send verification
+                    </Text>
+                </TouchableOpacity>
+            </>    
+        )
+    }
+
+    function renderconfirm (){
+        return (
+            <>
+                <TextInput
+                    placeholder='Confim Code'
+                    onChangeText={setCode}
+                    keyboardType={'number-pad'}
+                    style={styles.textInput}
+                />
+                <TouchableOpacity style={styles.sendCode} onPress={confirmCode}>
+                    <Text style={styles.buttonText}>
+                        Send confirmation code
+                    </Text>
+                </TouchableOpacity>
+            </>
+        )
+    }
+
+
 
     return (
         <View style={styles.container}>
@@ -39,33 +84,9 @@ const MainCoffeeCompenent = () => {
                 ref={recaptchaVerifier}
                 firebaseConfig={firebaseConfig}
             />
-            <Text style={styles.mainText}>
-                Login with Phone Number
-            </Text>
-            <TextInput
-                placeholder='Phone Number With Country Code'
-                onChangeText={setPhoneNumber}
-                keyboardType={'phone-pad'}
-                autoComplete='tel'
-                style={styles.textInput}
-            />
-            <TouchableOpacity style={styles.sendVerification} onPress={sendVerifaciton}>
-                <Text style={styles.buttonText}>
-                    Send verification
-                </Text>
-            </TouchableOpacity>
-            <TextInput
-                placeholder='Confim Code'
-                onChangeText={setCode}
-                keyboardType={'number-pad'}
-                style={styles.textInput}
-            />
-            <TouchableOpacity style={styles.sendCode} onPress={confirmCode}>
-                <Text style={styles.buttonText}>
-                    Send confirmation code
-                </Text>
-            </TouchableOpacity>
-        </View>
+            {showVerification && renderVerification()}
+            {showConfirm && renderconfirm()}
+        </View>  
     )
 }
 
@@ -76,7 +97,7 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         backgroundColor:'#000',
-        alignItems:' center ',
+        alignItems:'center',
         justifyContent: 'center'
     },
     textInput: {
@@ -92,7 +113,7 @@ const styles = StyleSheet.create({
     },
     sendVerification:{
         padding:20,
-        backgroundColor:'3498db',
+        backgroundColor:'#3498db',
         borderRadius:10,
    },
    sendCode:{
